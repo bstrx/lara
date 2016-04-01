@@ -4,6 +4,7 @@ use Carbon\Carbon;
 use laravel\Article;
 use laravel\Http\Controllers\Controller;
 use laravel\Http\Requests\ArticleRequest;
+use laravel\Tag;
 use laravel\User;
 
 class ArticleController extends Controller
@@ -24,16 +25,19 @@ class ArticleController extends Controller
 
     public function create()
     {
-        return view('article.create');
+        $tags = Tag::all()->lists('name', 'id');
+
+        return view('article.create', ['tags' => $tags]);
     }
 
     public function store(ArticleRequest $request)
     {
         $user = $request->user();
         if ($user) {
-            /** @var User $user */
-            $user->articles()
-                ->save(new Article($request->all()));
+            /** @var Article $article */
+            $article = $user->articles()->create($request->all());
+
+            $article->tags()->attach($request->input('tag_list'));
         }
 
         return redirect('articles');
@@ -41,13 +45,14 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        return view('article.edit', ['article' => $article]);
+        $tags = Tag::all()->lists('name', 'id');
+
+        return view('article.edit', ['article' => $article, 'tags' => $tags]);
     }
 
     public function update(Article $article, ArticleRequest $request)
     {
         $article->update($request->all());
-        flash('Your message was updated');
 
         return redirect('articles');
     }
