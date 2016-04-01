@@ -13,7 +13,7 @@
 
 <div>
     {!! Form::label('tag_list', 'Tags: ') !!}
-    {!! Form::select('tag_list', $tags, null, ['multiple' => 'multiple']) !!}
+    {!! Form::select('tag_list[]', $tags, null, ['multiple' => 'multiple']) !!}
 </div>
 
 <div>
