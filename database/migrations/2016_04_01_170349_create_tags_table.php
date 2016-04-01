@@ -21,8 +21,16 @@ class CreateTagsTable extends Migration {
 
 		Schema::create('article_tag', function(Blueprint $table)
 		{
-			$table->unsignedInteger('article_id');
-			$table->unsignedInteger('tag_id');
+			$table->unsignedInteger('article_id')->index();
+			$table->foreign('article_id')
+				->references('id')
+				->on('article')
+				->onDelete('cascade');
+			$table->unsignedInteger('tag_id')->index();
+			$table->foreign('tag_id')
+				->references('id')
+				->on('tag')
+				->onDelete('cascade');
 			$table->timestamps();
 		});
 	}
@@ -35,6 +43,7 @@ class CreateTagsTable extends Migration {
 	public function down()
 	{
 		Schema::drop('tags');
+		Schema::drop('article_tag');
 	}
 
 }
