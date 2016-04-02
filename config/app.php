@@ -146,6 +146,7 @@ return [
 		'laravel\Providers\ConfigServiceProvider',
 		'laravel\Providers\EventServiceProvider',
 		'laravel\Providers\RouteServiceProvider',
+		'laravel\Providers\ViewComposerServiceProvider'
 
 	],
 
